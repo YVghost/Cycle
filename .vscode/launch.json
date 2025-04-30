@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Kivy Mobile Debug",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/app/main.py",
+            "args": ["-m", "screen,port=5555"],
+            "env": {
+                "KIVY_NO_CONSOLELOG": "1"
+            },
+            "console": "integratedTerminal"
+        }
+    ]
+}

@@ -1,46 +1,23 @@
 import numpy as np
-from sklearn.linear_model import BayesianRidge
 from datetime import datetime, timedelta
+from sklearn.linear_model import BayesianRidge
 
 class CyclePredictor:
-    def __init__(self, db_manager):
-        self.db = db_manager
+    def __init__(self, cycle_data):
         self.model = BayesianRidge()
+        self.train_model(cycle_data)
     
-    def train_model(self):
-        data = self.db.get_cycle_stats()
-        if len(data) < 3:
-            return None
-        
+    def train_model(self, data):
         X = np.array(range(len(data))).reshape(-1, 1)
         y = np.array(data)
         self.model.fit(X, y)
-        return self.model.score(X, y)
     
-    def predict_next_periods(self, n_periods=3):
-        data = self.db.get_cycle_stats()
-        if len(data) < 3:
-            return []
+    def predict_next(self, last_date, n_periods=3):
+        next_dates = []
+        current_pred = len(self.model.predict([[0]]))
         
-        last_date = self.db.get_all_periods()[0][0]
-        last_date = datetime.strptime(last_date, '%Y-%m-%d')
+        for i in range(1, n_periods + 1):
+            pred_days = self.model.predict([[current_pred + i]])[0]
+            next_dates.append(last_date + timedelta(days=pred_days))
         
-        X_pred = np.array([[len(data) + i] for i in range(n_periods)])
-        predictions = self.model.predict(X_pred)
-        
-        results = []
-        current_date = last_date
-        for days in predictions:
-            current_date += timedelta(days=days)
-            results.append(current_date.strftime('%Y-%m-%d'))
-        
-        return results
-    
-    def get_confidence_interval(self):
-        data = self.db.get_cycle_stats()
-        if len(data) < 3:
-            return (0, 0)
-        
-        mean = np.mean(data)
-        std = np.std(data)
-        return (max(0, mean - 1.96*std), mean + 1.96*std)
+        return next_dates

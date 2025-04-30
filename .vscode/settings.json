@@ -1,0 +1,10 @@
+{
+    "python.pythonPath": "venv/bin/python",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/*.pyc": true
+    }
+}

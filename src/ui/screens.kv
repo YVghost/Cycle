@@ -1,0 +1,56 @@
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+
+<MainScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '20dp'
+        
+        Label:
+            text: 'Registro de Ciclo'
+            font_size: '24sp'
+            halign: 'center'
+        
+        DatePicker:
+            id: date_picker
+            size_hint_y: 0.4
+        
+        TextInput:
+            hint_text: 'Notas (opcional)'
+            size_hint_y: 0.2
+        
+        Button:
+            text: 'Guardar Registro'
+            on_press: root.save_record()
+        
+        Button:
+            text: 'Ver Predicciones'
+            on_press: root.manager.current = 'predictions'
+
+<PredictionScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        
+        ScrollView:
+            GridLayout:
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                
+                Label:
+                    text: 'Próximos Períodos'
+                    font_size: '20sp'
+                
+                PredictionCard:
+                    title: 'Próximo Ciclo'
+                    date: root.next_prediction
+                    confidence: '85%'
+                
+                PredictionCard:
+                    title: 'Siguiente Ciclo'
+                    date: root.following_prediction
+                    confidence: '78%'
+        
+        Button:
+            text: 'Volver'
+            size_hint_y: 0.1
+            on_press: root.manager.current = 'main'
