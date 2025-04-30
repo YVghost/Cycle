@@ -1,0 +1,37 @@
+<HomeScreen@MDScreen>
+    name: 'home'
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 15
+        
+        MDLabel:
+            text: 'Seguimiento del Ciclo'
+            halign: 'center'
+            font_style: 'H4'
+        
+        MDRaisedButton:
+            text: 'Registrar Nuevo Período'
+            on_release: app.root.current = 'history'
+            size_hint_y: None
+            height: 50
+        
+        MDCard:
+            orientation: 'vertical'
+            padding: 20
+            size_hint_y: None
+            height: 200
+            
+            MDLabel:
+                text: 'Próximas Predicciones'
+                font_style: 'H6'
+            
+            MDLabel:
+                id: predictions_label
+                text: app.predictor.predict_next_periods(3) or "Insuficientes datos"
+        
+        MDLabel:
+            id: confidence_label
+            text: f'Margen de error: {app.predictor.get_confidence_interval()[0]:.1f}-{app.predictor.get_confidence_interval()[1]:.1f} días'
+            halign: 'center'

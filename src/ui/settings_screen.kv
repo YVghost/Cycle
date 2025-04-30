@@ -1,0 +1,36 @@
+<SettingsScreen@MDScreen>
+    name: 'settings'
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 15
+        
+        MDLabel:
+            text: 'Configuración'
+            halign: 'center'
+            font_style: 'H4'
+        
+        MDCard:
+            orientation: 'vertical'
+            padding: 20
+            size_hint_y: None
+            height: 150
+            
+            MDSwitch:
+                id: notif_switch
+                text: "Notificaciones"
+                pos_hint: {'center_x': 0.5}
+                on_active: app.toggle_notifications(self.active)
+        
+        MDRaisedButton:
+            text: 'Exportar Datos'
+            on_release: app.export_data()
+            size_hint_y: None
+            height: 50
+        
+        MDRaisedButton:
+            text: 'Regresar'
+            on_release: app.root.current = 'home'
+            size_hint_y: None
+            height: 50

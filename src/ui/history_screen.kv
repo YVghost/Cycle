@@ -1,0 +1,24 @@
+from kivymd.uix.screen import MDScreen
+from kivymd.uix.list import MDList, OneLineListItem
+from kivy.uix.scrollview import ScrollView
+
+class HistoryScreen(MDScreen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.app = MDApp.get_running_app()
+        self.build_ui()
+    
+    def build_ui(self):
+        scroll = ScrollView()
+        list_view = MDList()
+        
+        periods = self.app.db.get_all_periods()
+        for date, length in periods:
+            item = OneLineListItem(
+                text=f"{date} - {length} días" if length else date,
+                theme_text_color="Primary"
+            )
+            list_view.add_widget(item)
+        
+        scroll.add_widget(list_view)
+        self.add_widget(scroll)
